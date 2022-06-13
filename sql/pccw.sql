@@ -25,6 +25,6 @@ CREATE TABLE `pccw_user_mail` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idex_email` (`email`) USING BTREE,
+  KEY `idex_email` (`email`) USING BTREE,
   KEY `idx_time_state` (`state`,`create_time`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;

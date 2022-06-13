@@ -15,6 +15,7 @@ import com.pccw.register.infrastructure.po.UserMailExample;
 import com.pccw.register.infrastructure.po.UserMailPO;
 import com.pccw.register.infrastructure.po.UserPO;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +48,8 @@ public class RegisterRepositoryImpl implements RegisterRepository {
                 throw new BussinessException(ConstantsUtils.USER_EXIST);
             }else{
                 existUser.setState(User.UserState.NORMAL);
+                existUser.setName(user.getName());
+                existUser.setPassword(user.getPassword());
                 Integer result = userMapper.updateByPrimaryKeySelective(existUser);
                 return result != null;
             }
