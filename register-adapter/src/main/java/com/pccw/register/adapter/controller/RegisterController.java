@@ -22,8 +22,6 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
-    @Autowired
-    private VelocityUtils velocityUtils;
 
     @Autowired
     private UserDTOConvert userDTOConvert;
@@ -51,20 +49,11 @@ public class RegisterController {
 
 
     @ApiOperation("获得用户信息接口")
-    @PostMapping("/get-user")
+    @GetMapping("/get-user")
     public ResultDTO<UserDTO> getUser(@RequestParam("email")  String email){
         User user = registerService.getUser(email);
         return new ResultDTO<UserDTO>().success(userDTOConvert.domian2Dto(user));
     }
-
-
-
-    @GetMapping("/test")
-    public String test(){
-        return velocityUtils.getString("test.vm","苏仁永");
-    }
-
-
 
 
 
