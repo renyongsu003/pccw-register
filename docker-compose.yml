@@ -1,0 +1,79 @@
+version: '3'
+networks:
+  registernet:
+    driver: bridge
+
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: MySqlDockerfile
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    expose:
+      - 3306
+    ports:
+      - "3306:3306"
+    networks:
+      - registernet
+
+
+  smtpserver:
+    image: "gessnerfl/fake-smtp-server"
+    container_name: smtpserver
+    expose:
+      - 5080
+      - 5081
+      - 5025
+    ports:
+      - "5080:5080"
+    networks:
+      - registernet
+
+  zookeeper:
+    image: "bitnami/zookeeper:latest"
+    container_name: zookeeper
+    networks:
+      - registernet
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    expose:
+      - 2181
+
+  kafka:
+    image: "bitnami/kafka:3.1.1"
+    container_name: kafka
+    networks:
+      - registernet
+    links:
+      - zookeeper
+    environment:
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_ZOOKEEPER_CONNECT: "zookeeper:2181"
+    expose:
+      - 9092
+    depends_on:
+      - zookeeper
+
+  register-web:
+    build: .
+    container_name: "register-web"
+    ports:
+      - "8080:8080"
+    networks:
+      - registernet
+    links:
+      - mysql
+      - smtpserver
+      - zookeeper
+      - kafka
+    depends_on:
+      - mysql
+      - smtpserver
+      - zookeeper
+      - kafka
+
+
+
+
