@@ -6,6 +6,7 @@ import com.pccw.register.domain.entity.UserMail;
 import com.pccw.register.domain.exceptions.BussinessException;
 import com.pccw.register.domain.repository.RegisterRepository;
 import com.pccw.register.domain.utils.ConstantsUtils;
+import com.pccw.register.domain.utils.PasswordSec;
 import com.pccw.register.infrastructure.convert.UserConvert;
 import com.pccw.register.infrastructure.convert.UserMailConvert;
 import com.pccw.register.infrastructure.mapper.UserMailMapper;
@@ -49,7 +50,7 @@ public class RegisterRepositoryImpl implements RegisterRepository {
             }else{
                 existUser.setState(User.UserState.NORMAL);
                 existUser.setName(user.getName());
-                existUser.setPassword(user.getPassword());
+                existUser.setPassword(PasswordSec.sec(user.getPassword()));
                 Integer result = userMapper.updateByPrimaryKeySelective(existUser);
                 return result != null;
             }
