@@ -6,3 +6,4 @@ b.web服务的地址为： http://127.0.0.1:8080/swagger-ui.html
 c.mysql数据库可连接 127.0.0.1:3306    
 
 
+![输入图片说明](image.png)
